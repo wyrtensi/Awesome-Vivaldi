@@ -7,8 +7,8 @@ Arc Like Favourite Tabs, or call it Zen Essentials.
 Currently only support 3x3 tabs grid.
 */
 
-/* === Uncomment :root to use and config this mod independently === */
-/* :root {
+/* Standalone defaults so this mod does not depend on other layout files. */
+:root {
   --fluid-tabs-grid: on;
   --fluid-pin-at-top: off;
 
@@ -18,12 +18,12 @@ Currently only support 3x3 tabs grid.
   --pinned-icon-size: 20px;
   --pinned-tab-height: 50px;
   --animation-speed: 280ms;
-} */
+}
 
 /* Fluid tabs grid layout for pinned tabs */
 @container style(--fluid-tabs-grid: on) {
   /* Container adjustments */
-  .resize {
+  #tabs-tabbar-container .resize {
     max-height: fit-content !important;
     overflow: hidden !important;
   }
@@ -31,9 +31,9 @@ Currently only support 3x3 tabs grid.
   /* Grid layout for tab strip */
   #tabs-container .tab-strip {
     display: grid !important;
-    grid-template-columns: repeat(var(--pinned-column-count), minmax(0, 1fr));
+    grid-template-columns: repeat(var(--pinned-column-count, 3), minmax(0, 1fr));
     grid-auto-rows: min-content;
-    gap: var(--pinned-gap);
+    gap: var(--pinned-gap, 8px);
     justify-content: center !important;
   }
 
@@ -47,8 +47,8 @@ Currently only support 3x3 tabs grid.
     > span:has(.is-pinned):nth-child(-n + 9)
     .is-pinned
     .tab-wrapper {
-    max-height: var(--pinned-tab-height) !important;
-    min-height: var(--pinned-tab-height) !important;
+    max-height: var(--pinned-tab-height, 50px) !important;
+    min-height: var(--pinned-tab-height, 50px) !important;
     display: flex !important;
     justify-content: flex-start !important;
     align-items: center !important;
@@ -65,7 +65,7 @@ Currently only support 3x3 tabs grid.
     > span:has(.is-pinned):nth-child(n + 7):nth-child(-n + 9)
     .is-pinned
     .tab-wrapper {
-    margin-bottom: var(--pinned-gap) !important;
+    margin-bottom: var(--pinned-gap, 8px) !important;
   }
 
   #tabs-container
@@ -95,11 +95,11 @@ Currently only support 3x3 tabs grid.
     > span:has(.is-pinned):nth-child(-n + 9)
     .is-pinned
     .favicon {
-    width: var(--pinned-icon-size) !important;
-    height: var(--pinned-icon-size) !important;
+    width: var(--pinned-icon-size, 20px) !important;
+    height: var(--pinned-icon-size, 20px) !important;
     margin: auto !important;
     justify-self: flex-start;
-    transition: margin var(--animation-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: margin var(--animation-speed, 280ms) cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
   #tabs-container
@@ -117,7 +117,7 @@ Currently only support 3x3 tabs grid.
     overflow: hidden;
     isolation: isolate;
     z-index: 5;
-    transition: all var(--animation-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--animation-speed, 280ms) cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   #tabs-container
@@ -130,11 +130,11 @@ Currently only support 3x3 tabs grid.
     position: relative;
     z-index: 100000000;
     width: calc(
-      var(--pinned-column-count) * 100% + (var(--pinned-column-count) - 1) *
-        var(--pinned-gap)
+      var(--pinned-column-count, 3) * 100% + (var(--pinned-column-count, 3) - 1) *
+        var(--pinned-gap, 8px)
     ) !important;
-    min-height: calc(var(--pinned-tab-height) + var(--pinned-gap)) !important;
-    transition: all var(--animation-speed) cubic-bezier(0.4, 0, 0.2, 1) 0.8s;
+    min-height: calc(var(--pinned-tab-height) + var(--pinned-gap, 8px)) !important;
+    transition: all var(--animation-speed, 280ms) cubic-bezier(0.4, 0, 0.2, 1) 0.8s;
   }
 
   /* Column-specific hover positioning */
@@ -151,7 +151,7 @@ Currently only support 3x3 tabs grid.
     > span:nth-child(3n + 2):nth-child(-n + 9):has(.is-pinned)
     .is-pinned
     .tab-wrapper:not(.active):hover {
-    margin-left: calc(-100% - var(--pinned-gap)) !important;
+    margin-left: calc(-100% - var(--pinned-gap, 8px)) !important;
   }
 
   #tabs-container
@@ -159,13 +159,7 @@ Currently only support 3x3 tabs grid.
     > span:nth-child(3n):nth-child(-n + 9):has(.is-pinned)
     .is-pinned
     .tab-wrapper:not(.active):hover {
-    margin-left: calc(-200% - 2 * var(--pinned-gap)) !important;
-  }
-
-  #tabs-container
-    .tab-strip:has(> span:has(.is-pinned:nth-child(-n + 9) .tab-wrapper:hover))
-    > span:has(.is-pinned:nth-child(-n + 9):not(:has(.tab-wrapper:hover))) {
-    pointer-events: none;
+    margin-left: calc(-200% - 2 * var(--pinned-gap, 8px)) !important;
   }
 
   /* Title visibility for first 9 pinned tabs */
@@ -176,16 +170,16 @@ Currently only support 3x3 tabs grid.
     .title {
     opacity: 0 !important;
     max-width: 0 !important;
-    transition: opacity var(--animation-speed) cubic-bezier(0.4, 0, 0.2, 1),
-      max-width var(--animation-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity var(--animation-speed, 280ms) cubic-bezier(0.4, 0, 0.2, 1),
+      max-width var(--animation-speed, 280ms) cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   #tabs-container
     .tab-strip
-    > span:has(.is-pinned)
+    > span:has(.is-pinned):nth-child(-n + 9)
     .is-pinned
     .tab-wrapper:hover
-    .title:nth-child(-n + 9) {
+    .title {
     opacity: 1 !important;
     max-width: 100% !important;
   }
@@ -201,7 +195,7 @@ Currently only support 3x3 tabs grid.
     max-width: 0 !important;
     min-width: 0 !important;
     opacity: 0 !important;
-    transition: all var(--animation-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--animation-speed, 280ms) cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   #tabs-container
@@ -241,7 +235,7 @@ Currently only support 3x3 tabs grid.
     .tab-strip
     > span:has(.is-pinned):nth-child(n + 10)
     .is-pinned {
-    grid-column: 1 / span var(--pinned-column-count) !important;
+    grid-column: 1 / span var(--pinned-column-count, 3) !important;
   }
 
   #tabs-container
@@ -374,16 +368,16 @@ Currently only support 3x3 tabs grid.
     /* background-color: var(--colorBgLighter) !important; */
   }
 
-  .tab-wrapper {
+  #tabs-container .tab-strip > span:has(.is-pinned) .tab-wrapper {
     position: relative;
     transform: none;
   }
 
-  .tab-header {
+  #tabs-container .tab-strip > span:has(.is-pinned) .tab-header {
     min-height: 100%;
   }
 
-  .svg-tab-selection {
+  #tabs-container .tab-strip > span:has(.is-pinned) .svg-tab-selection {
     min-height: 100%;
   }
 
@@ -391,7 +385,7 @@ Currently only support 3x3 tabs grid.
   #tabs-container .tab-position:not(.is-pinned),
 	/* #tabs-container .tab-position:not(.is-pinned) .separator, */
 	#tabs-container .tab-position:not(.is-pinned) .newtab {
-    grid-column: 1 / span var(--pinned-column-count) !important;
+    grid-column: 1 / span var(--pinned-column-count, 3) !important;
     position: relative !important;
     transform: none !important;
   }
@@ -431,7 +425,7 @@ Currently only support 3x3 tabs grid.
       .is-pinned
       .tab-wrapper:hover {
       position: sticky !important;
-      top: calc(var(--pinned-tab-height) + var(--pinned-gap)) !important;
+      top: calc(var(--pinned-tab-height) + var(--pinned-gap, 8px)) !important;
       z-index: 200 !important;
     }
 
@@ -441,7 +435,7 @@ Currently only support 3x3 tabs grid.
       .is-pinned
       .tab-wrapper:hover {
       position: sticky !important;
-      top: calc((var(--pinned-tab-height) + var(--pinned-gap)) * 2) !important;
+      top: calc((var(--pinned-tab-height) + var(--pinned-gap, 8px)) * 2) !important;
       z-index: 200 !important;
     }
 
@@ -454,9 +448,9 @@ Currently only support 3x3 tabs grid.
       content: "";
       position: fixed;
       top: 70px;
-      left: calc(var(--pinned-gap) / 2);
-      min-width: calc(var(--tabs-container-expand-width) - var(--pinned-gap));
-      height: calc(var(--pinned-tab-height) * 3 + var(--pinned-gap) * 3);
+      left: calc(var(--pinned-gap, 8px) / 2);
+      min-width: calc(var(--tabs-container-expand-width) - var(--pinned-gap, 8px));
+      height: calc(var(--pinned-tab-height) * 3 + var(--pinned-gap, 8px) * 3);
       z-index: 10;
       pointer-events: none;
       opacity: 0;
@@ -465,13 +459,13 @@ Currently only support 3x3 tabs grid.
 
     #tabs-container:hover .tab-strip > span:nth-child(1) .tab-position::after {
       opacity: 1 !important;
-      transition: opacity var(--animation-speed) ease
+      transition: opacity var(--animation-speed, 280ms) ease
         calc(var(--transition-delay-time-collapse) + var(--animation-speed));
     }
 
     #tabs-container.right .tab-strip > span:nth-child(1) .tab-position::after {
       left: unset;
-      right: calc(var(--pinned-gap) / 2);
+      right: calc(var(--pinned-gap, 8px) / 2);
     }
 
     #tabs-container
@@ -491,7 +485,7 @@ Currently only support 3x3 tabs grid.
       .is-pinned
       .tab-wrapper:not(:hover) {
       position: sticky !important;
-      top: calc(var(--pinned-tab-height) + var(--pinned-gap)) !important;
+      top: calc(var(--pinned-tab-height) + var(--pinned-gap, 8px)) !important;
       /* background: transparent !important; */
       z-index: 150 !important;
     }
@@ -502,7 +496,7 @@ Currently only support 3x3 tabs grid.
       .is-pinned
       .tab-wrapper:not(:hover) {
       position: sticky !important;
-      top: calc((var(--pinned-tab-height) + var(--pinned-gap)) * 2) !important;
+      top: calc((var(--pinned-tab-height) + var(--pinned-gap, 8px)) * 2) !important;
       /* background: transparent !important; */
       z-index: 150 !important;
     }
@@ -532,7 +526,7 @@ Currently only support 3x3 tabs grid.
     #tabs-container .tab-strip > span:has(.is-pinned):nth-child(n + 10),
     #tabs-container .tab-strip > span:not(:has(.is-pinned)) {
       grid-row: auto !important;
-      /* margin-top: calc((var(--pinned-tab-height) + var(--pinned-gap)) * 3 + 1px) !important; */
+      /* margin-top: calc((var(--pinned-tab-height) + var(--pinned-gap, 8px)) * 3 + 1px) !important; */
     }
   }
 }
