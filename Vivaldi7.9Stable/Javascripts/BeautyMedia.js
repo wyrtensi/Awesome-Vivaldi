@@ -603,22 +603,15 @@
           const isAudioOn = tabEl.classList.contains('audio-on') || tabEl.querySelector('.audio-on');
 
           if (isAudioOn) {
-              if (tabPosition) {
-                  // Use both id and data-id to account for vivaldi recycling wrappers
-                  styleTag.textContent = `
-                      html.beautymedia-tabs-animation-enabled .tab#tab-${tabId}.audio-on:not(.active)::before,
-                      html.beautymedia-tabs-animation-enabled .tab[data-id="tab-${tabId}"].audio-on:not(.active)::before {
-                          background: conic-gradient(from var(--dp-deg) at center, ${gradientStops}) !important;
-                      }
-                  `;
-              } else {
-                  styleTag.textContent = `
-                      html.beautymedia-tabs-animation-enabled .tab#tab-${tabId}.audio-on:not(.active)::before,
-                      html.beautymedia-tabs-animation-enabled .tab[data-id="tab-${tabId}"].audio-on:not(.active)::before {
-                          background: conic-gradient(from var(--dp-deg) at center, ${gradientStops}) !important;
-                      }
-                  `;
-              }
+              // Use both id and data-id to account for vivaldi recycling wrappers
+              styleTag.textContent = `
+                  html.beautymedia-tabs-animation-enabled .tab#tab-${tabId}.audio-on:not(.active)::before,
+                  html.beautymedia-tabs-animation-enabled .tab[data-id="tab-${tabId}"].audio-on:not(.active)::before,
+                  html.beautymedia-tabs-animation-enabled .tab-wrapper[id="tab-${tabId}"] .tab.audio-on:not(.active)::before,
+                  html.beautymedia-tabs-animation-enabled .tab-wrapper[data-id="tab-${tabId}"] .tab.audio-on:not(.active)::before {
+                      background: conic-gradient(from var(--dp-deg) at center, ${gradientStops}) !important;
+                  }
+              `;
           } else {
               styleTag.textContent = '';
           }
