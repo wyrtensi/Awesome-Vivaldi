@@ -304,9 +304,31 @@
             closeBtn.innerText = 'Close';
             closeBtn.className = 'ses-modal-close';
 
-            const closeModal = () => {
+            let closeModal = () => {
                 modal.classList.remove('visible');
                 setTimeout(() => modal.remove(), 300);
+            };
+
+            // Close events
+            const escHandler = (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            };
+
+            const detachCloseHandlers = () => {
+                document.removeEventListener('keydown', escHandler, true);
+                modal.removeEventListener('click', overlayClickHandler);
+            };
+
+            const overlayClickHandler = (e) => {
+                if (e.target === modal) closeModal();
+            };
+
+            const originalCloseModal = closeModal;
+            closeModal = () => {
+                detachCloseHandlers();
+                originalCloseModal();
             };
 
             closeBtn.onclick = closeModal;
@@ -314,19 +336,11 @@
             content.appendChild(footer);
 
             modal.appendChild(content);
-            const browserNode = document.querySelector('#browser') || document.body;
-            browserNode.appendChild(modal);
+            // Append to body to avoid transformed/layout containers breaking fixed overlay behavior.
+            document.body.appendChild(modal);
 
-            // Close events
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal();
-            });
-            document.addEventListener('keydown', function escHandler(e) {
-                if (e.key === 'Escape') {
-                    closeModal();
-                    document.removeEventListener('keydown', escHandler);
-                }
-            });
+            modal.addEventListener('click', overlayClickHandler);
+            document.addEventListener('keydown', escHandler, true);
 
             // Animate in
             requestAnimationFrame(() => {
