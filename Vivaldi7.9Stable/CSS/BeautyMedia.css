@@ -458,6 +458,7 @@ html.beautymedia-tabs-icon-enabled .tab-audio:hover::after {
 /* 2. Pinned & Small Tabs: Audio icon replaces favicon for space efficiency */
 html.beautymedia-tabs-icon-enabled .tab:is(.pinned, .tab-small):is(.audio-on, .audio-muted) .favicon {
   transform: scale(0) !important;
+  display: none !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
