@@ -6,7 +6,7 @@
  */
 
 .search-engine-selector-modal {
-    position: fixed;
+    position: fixed !important;
     top: 0;
     left: 0;
     width: 100vw;
@@ -16,7 +16,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999999;
+    z-index: 2147483647 !important;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
@@ -294,7 +294,7 @@
     align-items: center;
     gap: 4px;
     margin-right: 8px;
-    z-index: 100;
+    z-index: 100 !important;
 }
 
 /* Show when focused or typed */
@@ -369,7 +369,7 @@
     transition: opacity 0.25s ease, max-width 0.25s ease, padding 0.25s ease, margin 0.25s ease;
     pointer-events: none;
     flex-shrink: 0;
-    z-index: 10;
+    z-index: 10 !important;
 }
 
 .SearchEngineSelector-LeftBadge.visible {

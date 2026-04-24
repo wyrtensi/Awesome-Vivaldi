@@ -493,7 +493,8 @@ html.beautymedia-tabs-animation-enabled .tab.audio-on:not(.active) {
   height: 97% !important;
 }
 
-html.beautymedia-tabs-animation-enabled .tab-position:has(.tab.audio-on):not(:has(.active))::after {
+html.beautymedia-tabs-animation-enabled .tab-position:has(.tab.audio-on):not(:has(.active))::before,
+html.beautymedia-tabs-animation-enabled .tab-wrapper:has(.tab.audio-on):not(:has(.active))::before {
   content: '';
   position: absolute;
   inset: 0;
