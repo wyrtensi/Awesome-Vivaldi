@@ -18,6 +18,8 @@
     enabled: true,
     showPlayer: true,
     showTabsIcon: true,
+    tabPlayingIconStyle: 'quietify',
+    tabMutedIconStyle: 'default',
     showTabGradient: true,
     defaultOnlyAccent: false,
     defaultOnlyGradient: false,
@@ -905,6 +907,15 @@
       root.classList.remove('beautymedia-tabs-icon-enabled');
     }
 
+    root.classList.remove(
+      'bm-tab-playing-icon-quietify',
+      'bm-tab-playing-icon-default',
+      'bm-tab-muted-icon-quietify',
+      'bm-tab-muted-icon-default'
+    );
+    root.classList.add(s.tabPlayingIconStyle === 'default' ? 'bm-tab-playing-icon-default' : 'bm-tab-playing-icon-quietify');
+    root.classList.add(s.tabMutedIconStyle === 'quietify' ? 'bm-tab-muted-icon-quietify' : 'bm-tab-muted-icon-default');
+
     if (s.enabled && s.showTabGradient) {
       root.classList.add('beautymedia-tabs-animation-enabled');
     } else {
@@ -997,6 +1008,8 @@ function saveSettings() {
       if (state.settings.playerShadowSize === undefined) state.settings.playerShadowSize = 30;
       if (state.settings.playerTheme === undefined) state.settings.playerTheme = 'dark';
       if (state.settings.defaultPlayerPosition === undefined) state.settings.defaultPlayerPosition = 'bottom-right';
+      if (!['quietify', 'default'].includes(state.settings.tabPlayingIconStyle)) state.settings.tabPlayingIconStyle = 'quietify';
+      if (!['quietify', 'default'].includes(state.settings.tabMutedIconStyle)) state.settings.tabMutedIconStyle = 'default';
 
       applySettings();
 
@@ -1067,6 +1080,24 @@ function saveSettings() {
         <div class="bm-row">
           <div class="bm-row-label">Tab audio icon colors</div>
           <div class="bm-row-controls"><input type="checkbox" id="bm-setting-tabs-icon" ${s.showTabsIcon ? 'checked' : ''}></div>
+        </div>
+        <div class="bm-row">
+          <div class="bm-row-label">Playing tab icon style</div>
+          <div class="bm-row-controls">
+            <select id="bm-setting-playing-icon-style" class="bm-select">
+              <option value="quietify" ${s.tabPlayingIconStyle === 'quietify' ? 'selected' : ''}>Quietify</option>
+              <option value="default" ${s.tabPlayingIconStyle === 'default' ? 'selected' : ''}>Default</option>
+            </select>
+          </div>
+        </div>
+        <div class="bm-row">
+          <div class="bm-row-label">Muted tab icon style</div>
+          <div class="bm-row-controls">
+            <select id="bm-setting-muted-icon-style" class="bm-select">
+              <option value="quietify" ${s.tabMutedIconStyle === 'quietify' ? 'selected' : ''}>Quietify</option>
+              <option value="default" ${s.tabMutedIconStyle === 'default' ? 'selected' : ''}>Default</option>
+            </select>
+          </div>
         </div>
         <div class="bm-row">
           <div class="bm-row-label">Tab animated gradient</div>
@@ -1207,6 +1238,26 @@ function saveSettings() {
     updateCheck('bm-setting-show-player', 'showPlayer');
     updateCheck('bm-setting-tabs-icon', 'showTabsIcon');
     updateCheck('bm-setting-tabs-gradient', 'showTabGradient');
+
+    const tabPlayingIconStyleSelect = group.querySelector('#bm-setting-playing-icon-style');
+    if (tabPlayingIconStyleSelect) {
+        tabPlayingIconStyleSelect.addEventListener('change', (e) => {
+            state.settings.tabPlayingIconStyle = e.target.value === 'default' ? 'default' : 'quietify';
+            saveSettings();
+            applySettings();
+            showSaveIndicator();
+        });
+    }
+
+    const tabMutedIconStyleSelect = group.querySelector('#bm-setting-muted-icon-style');
+    if (tabMutedIconStyleSelect) {
+        tabMutedIconStyleSelect.addEventListener('change', (e) => {
+            state.settings.tabMutedIconStyle = e.target.value === 'quietify' ? 'quietify' : 'default';
+            saveSettings();
+            applySettings();
+            showSaveIndicator();
+        });
+    }
 
     const themeSelect = group.querySelector('#bm-setting-player-theme');
     if (themeSelect) {
