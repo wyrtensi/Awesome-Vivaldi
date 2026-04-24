@@ -606,19 +606,15 @@
               if (tabPosition) {
                   // Use both id and data-id to account for vivaldi recycling wrappers
                   styleTag.textContent = `
-                      html.beautymedia-tabs-animation-enabled .tab-position:not(:has(.tab-wrapper)):has(#tab-${tabId}.audio-on):not(:has(.active))::before,
-                      html.beautymedia-tabs-animation-enabled .tab-position[data-id="tab-${tabId}"]:not(:has(.tab-wrapper)):has(.tab.audio-on):not(:has(.active))::before,
-                      html.beautymedia-tabs-animation-enabled .tab-wrapper:has(#tab-${tabId}.audio-on):not(:has(.active))::before,
-                      html.beautymedia-tabs-animation-enabled .tab-wrapper[data-id="tab-${tabId}"]:has(.tab.audio-on):not(:has(.active))::before {
+                      html.beautymedia-tabs-animation-enabled .tab#tab-${tabId}.audio-on:not(.active)::before,
+                      html.beautymedia-tabs-animation-enabled .tab[data-id="tab-${tabId}"].audio-on:not(.active)::before {
                           background: conic-gradient(from var(--dp-deg) at center, ${gradientStops}) !important;
                       }
                   `;
               } else {
                   styleTag.textContent = `
                       html.beautymedia-tabs-animation-enabled .tab#tab-${tabId}.audio-on:not(.active)::before,
-                      html.beautymedia-tabs-animation-enabled .tab[data-id="tab-${tabId}"].audio-on:not(.active)::before,
-                      html.beautymedia-tabs-animation-enabled .tab-wrapper:has(#tab-${tabId}.audio-on):not(:has(.active))::before,
-                      html.beautymedia-tabs-animation-enabled .tab-wrapper[data-id="tab-${tabId}"]:has(.tab.audio-on):not(:has(.active))::before {
+                      html.beautymedia-tabs-animation-enabled .tab[data-id="tab-${tabId}"].audio-on:not(.active)::before {
                           background: conic-gradient(from var(--dp-deg) at center, ${gradientStops}) !important;
                       }
                   `;
@@ -962,7 +958,7 @@
         document.head.appendChild(styleTag);
     }
     const globalStops = getGlobalGradientStops();
-    styleTag.textContent = `html.beautymedia-tabs-animation-enabled .tab-position:not(:has(.tab-wrapper)):has(.tab.audio-on):not(:has(.active))::before, html.beautymedia-tabs-animation-enabled .tab-wrapper:has(.tab.audio-on):not(:has(.active))::before { background: conic-gradient(from var(--dp-deg) at center, ${globalStops}) !important; }`;
+    styleTag.textContent = `html.beautymedia-tabs-animation-enabled .tab.audio-on:not(.active)::before { background: conic-gradient(from var(--dp-deg) at center, ${globalStops}) !important; }`;
 
     if (!s.enabled || !s.showPlayer) {
       state.instances.forEach(inst => {

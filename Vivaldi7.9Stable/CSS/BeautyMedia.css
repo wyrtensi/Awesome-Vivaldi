@@ -63,7 +63,7 @@ html:not(.beautymedia-player-enabled) .draggable-player-root {
   background-position: center;
   opacity: 0.18;
   filter: blur(65px);
-  z-index: -1;
+  z-index: 10;
   pointer-events: none;
 }
 
@@ -495,17 +495,13 @@ html.beautymedia-tabs-animation-enabled .tab.audio-on:not(.active) {
 }
 
 
-html.beautymedia-tabs-animation-enabled .tab-position:not(:has(.tab-wrapper)):has(.tab.audio-on):not(:has(.active)),
-html.beautymedia-tabs-animation-enabled .tab-wrapper:has(.tab.audio-on):not(:has(.active)) {
-  position: relative !important;
-}
 
-html.beautymedia-tabs-animation-enabled .tab-position:not(:has(.tab-wrapper)):has(.tab.audio-on):not(:has(.active))::before,
-html.beautymedia-tabs-animation-enabled .tab-wrapper:has(.tab.audio-on):not(:has(.active))::before {
+
+html.beautymedia-tabs-animation-enabled .tab.audio-on:not(.active)::before {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 10;
   box-sizing: border-box;
   border-radius: var(--currentRadius);
   padding: 2px;
