@@ -18,6 +18,8 @@
   --pinned-icon-size: 20px;
   --pinned-tab-height: 50px;
   --animation-speed: 280ms;
+  --tabs-container-expand-width: 100%;
+  --transition-delay-time-collapse: 0ms;
 }
 
 /* === Conditional: only apply when tabs-tabbar-container has class="left" or "right" === */
@@ -70,6 +72,11 @@ body:has(#tabs-tabbar-container.right) {
       overflow: hidden !important;
     }
 
+    #tabs-container {
+      container-type: inline-size;
+      container-name: tabs-container;
+    }
+
     /* Grid layout for tab strip */
     #tabs-container .tab-strip {
       display: grid !important;
@@ -89,7 +96,7 @@ body:has(#tabs-tabbar-container.right) {
     /* Square button style for first 9 pinned tabs */
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(-n + 9)
+      > span:nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .tab-wrapper {
       max-height: var(--pinned-tab-height) !important;
@@ -108,7 +115,7 @@ body:has(#tabs-tabbar-container.right) {
 
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(n + 7):nth-child(-n + 9)
+      > span:nth-child(n + 7 of :has(.is-pinned)):nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .tab-wrapper {
       margin-bottom: var(--pinned-gap) !important;
@@ -138,7 +145,7 @@ body:has(#tabs-tabbar-container.right) {
 
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(-n + 9)
+      > span:nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .favicon {
       width: var(--pinned-icon-size) !important;
@@ -150,7 +157,7 @@ body:has(#tabs-tabbar-container.right) {
 
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(-n + 9)
+      > span:nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .tab-wrapper:hover
       .favicon {
@@ -168,7 +175,7 @@ body:has(#tabs-tabbar-container.right) {
 
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(-n + 9)
+      > span:nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .tab-wrapper:not(.active):hover {
       background-color: var(
@@ -189,7 +196,7 @@ body:has(#tabs-tabbar-container.right) {
     /* Column-specific hover positioning */
     #tabs-container
       .tab-strip
-      > span:nth-child(3n + 1):nth-child(-n + 9):has(.is-pinned)
+      > span:nth-child(3n + 1 of :has(.is-pinned)):nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .tab-wrapper:not(.active):hover {
       margin-left: 0 !important;
@@ -197,7 +204,7 @@ body:has(#tabs-tabbar-container.right) {
 
     #tabs-container
       .tab-strip
-      > span:nth-child(3n + 2):nth-child(-n + 9):has(.is-pinned)
+      > span:nth-child(3n + 2 of :has(.is-pinned)):nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .tab-wrapper:not(.active):hover {
       margin-left: calc(-100% - var(--pinned-gap)) !important;
@@ -205,24 +212,22 @@ body:has(#tabs-tabbar-container.right) {
 
     #tabs-container
       .tab-strip
-      > span:nth-child(3n):nth-child(-n + 9):has(.is-pinned)
+      > span:nth-child(3n of :has(.is-pinned)):nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .tab-wrapper:not(.active):hover {
       margin-left: calc(-200% - 2 * var(--pinned-gap)) !important;
     }
 
     #tabs-container
-      .tab-strip:has(
-        > span:has(.is-pinned:nth-child(-n + 9) .tab-wrapper:hover)
-      )
-      > span:has(.is-pinned:nth-child(-n + 9):not(:has(.tab-wrapper:hover))) {
+      .tab-strip:has(> span:nth-child(-n + 9 of :has(.is-pinned)) .tab-wrapper:hover)
+      > span:nth-child(-n + 9 of :has(.is-pinned)):not(:has(.tab-wrapper:hover)) {
       pointer-events: none;
     }
 
     /* Title visibility for first 9 pinned tabs */
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(-n + 9)
+      > span:nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .title {
       opacity: 0 !important;
@@ -236,7 +241,7 @@ body:has(#tabs-tabbar-container.right) {
       > span:has(.is-pinned)
       .is-pinned
       .tab-wrapper:hover
-      .title:nth-child(-n + 9) {
+      .title {
       opacity: 1 !important;
       max-width: 100% !important;
     }
@@ -244,7 +249,7 @@ body:has(#tabs-tabbar-container.right) {
     /* Stack counter auto-hide for first 9 pinned tabs */
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(-n + 9)
+      > span:nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .stack-counter {
       padding: 0 !important;
@@ -257,7 +262,7 @@ body:has(#tabs-tabbar-container.right) {
 
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(-n + 9)
+      > span:nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .tab-wrapper:hover
       .stack-counter {
@@ -272,7 +277,7 @@ body:has(#tabs-tabbar-container.right) {
     /* Close button disabled for first 9 pinned tabs */
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(-n + 9)
+      > span:nth-child(-n + 9 of :has(.is-pinned))
       .is-pinned
       .close {
       display: none !important;
@@ -290,14 +295,14 @@ body:has(#tabs-tabbar-container.right) {
     /* Regular style for pinned tabs after 9th */
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(n + 10)
+      > span:nth-child(n + 10 of :has(.is-pinned))
       .is-pinned {
       grid-column: 1 / span var(--pinned-column-count) !important;
     }
 
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(n + 10)
+      > span:nth-child(n + 10 of :has(.is-pinned))
       .is-pinned
       .tab-wrapper {
       grid-column: 1 / -1 !important;
@@ -311,7 +316,7 @@ body:has(#tabs-tabbar-container.right) {
 
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(n + 10)
+      > span:nth-child(n + 10 of :has(.is-pinned))
       .is-pinned
       .tab-wrapper:hover {
       width: 100% !important;
@@ -319,7 +324,7 @@ body:has(#tabs-tabbar-container.right) {
     }
 
     /* Title collapse/expand for pinned tabs after 9th */
-    /* #tabs-container .tab-strip > span:has(.is-pinned):nth-child(n + 10) .is-pinned .title {
+    /* #tabs-container .tab-strip > span:nth-child(n + 10 of :has(.is-pinned)) .is-pinned .title {
 		padding: 0 !important;
 		margin: 0 !important;
 		opacity: 0 !important;
@@ -334,7 +339,7 @@ body:has(#tabs-tabbar-container.right) {
 	}
 
 	@container tabs-container (min-width: 45px) {
-		#tabs-container .tab-strip > span:has(.is-pinned):nth-child(n + 10) .is-pinned .tab-wrapper .title {
+		#tabs-container .tab-strip > span:nth-child(n + 10 of :has(.is-pinned)) .is-pinned .tab-wrapper .title {
 			padding-left: 4px !important;
 			margin-right: 3px !important;
 			opacity: 1 !important;
@@ -382,7 +387,7 @@ body:has(#tabs-tabbar-container.right) {
 
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(n + 10)
+      > span:nth-child(n + 10 of :has(.is-pinned))
       .is-pinned
       .tab:hover
       .close {
@@ -391,7 +396,7 @@ body:has(#tabs-tabbar-container.right) {
 
     #tabs-container
       .tab-strip
-      > span:has(.is-pinned):nth-child(n + 10)
+      > span:nth-child(n + 10 of :has(.is-pinned))
       .is-pinned
       .favicon {
       width: 16px !important;
@@ -424,16 +429,16 @@ body:has(#tabs-tabbar-container.right) {
       background-color: var(--colorFg) !important;
     }
 
-    .tab-wrapper {
+    #tabs-container .tab-position .tab-wrapper {
       position: relative;
       transform: none;
     }
 
-    .tab-header {
+    #tabs-container .tab-position .tab-header {
       min-height: 100%;
     }
 
-    .svg-tab-selection {
+    #tabs-container .tab-position .svg-tab-selection {
       min-height: 100%;
     }
 
@@ -464,7 +469,7 @@ body:has(#tabs-tabbar-container.right) {
     }
 
     /* Hover state for first 9 pinned tabs */
-    /* body:not(:has(:is(.WorkspacePopup, #panel_switch, .toolbar-editor, .UrlBar-AddressField:focus-within))) #tabs-tabbar-container:hover #tabs-container:not(:hover) .tab-strip > span:has(.is-pinned):nth-child(-n + 9) .is-pinned .tab-wrapper {
+    /* body:not(:has(:is(.WorkspacePopup, #panel_switch, .toolbar-editor, .UrlBar-AddressField:focus-within))) #tabs-tabbar-container:hover #tabs-container:not(:hover) .tab-strip > span:nth-child(-n + 9 of :has(.is-pinned)) .is-pinned .tab-wrapper {
 		background-color: var(--colorBg, rgba(255, 255, 255, 0.2)) !important;
 		border: 1px solid var(--colorHighlightBgDark) !important;
 	} */
@@ -474,7 +479,7 @@ body:has(#tabs-tabbar-container.right) {
     @container style(--fluid-pin-at-top: on) {
       #tabs-container
         .tab-strip
-        > span:has(.is-pinned):nth-child(-n + 3)
+        > span:nth-child(-n + 3 of :has(.is-pinned))
         .is-pinned
         .tab-wrapper:hover {
         position: sticky !important;
@@ -484,7 +489,7 @@ body:has(#tabs-tabbar-container.right) {
 
       #tabs-container
         .tab-strip
-        > span:has(.is-pinned):nth-child(n + 4):nth-child(-n + 6)
+        > span:nth-child(n + 4 of :has(.is-pinned)):nth-child(-n + 6 of :has(.is-pinned))
         .is-pinned
         .tab-wrapper:hover {
         position: sticky !important;
@@ -494,7 +499,7 @@ body:has(#tabs-tabbar-container.right) {
 
       #tabs-container
         .tab-strip
-        > span:has(.is-pinned):nth-child(n + 7):nth-child(-n + 9)
+        > span:nth-child(n + 7 of :has(.is-pinned)):nth-child(-n + 9 of :has(.is-pinned))
         .is-pinned
         .tab-wrapper:hover {
         position: sticky !important;
@@ -542,7 +547,7 @@ body:has(#tabs-tabbar-container.right) {
 
       #tabs-container
         .tab-strip
-        > span:has(.is-pinned):nth-child(-n + 3)
+        > span:nth-child(-n + 3 of :has(.is-pinned))
         .is-pinned
         .tab-wrapper:not(:hover) {
         position: sticky !important;
@@ -553,7 +558,7 @@ body:has(#tabs-tabbar-container.right) {
 
       #tabs-container
         .tab-strip
-        > span:has(.is-pinned):nth-child(n + 4):nth-child(-n + 6)
+        > span:nth-child(n + 4 of :has(.is-pinned)):nth-child(-n + 6 of :has(.is-pinned))
         .is-pinned
         .tab-wrapper:not(:hover) {
         position: sticky !important;
@@ -564,7 +569,7 @@ body:has(#tabs-tabbar-container.right) {
 
       #tabs-container
         .tab-strip
-        > span:has(.is-pinned):nth-child(n + 7):nth-child(-n + 9)
+        > span:nth-child(n + 7 of :has(.is-pinned)):nth-child(-n + 9 of :has(.is-pinned))
         .is-pinned
         .tab-wrapper:not(:hover) {
         position: sticky !important;
@@ -575,7 +580,7 @@ body:has(#tabs-tabbar-container.right) {
         z-index: 150 !important; /* Pinned tab layer */
       }
 
-      #tabs-container .tab-strip > span:has(.is-pinned):nth-child(-n + 3) {
+      #tabs-container .tab-strip > span:nth-child(-n + 3 of :has(.is-pinned)) {
         grid-row: 1 !important;
         position: relative !important;
         z-index: 1 !important;
@@ -583,7 +588,7 @@ body:has(#tabs-tabbar-container.right) {
 
       #tabs-container
         .tab-strip
-        > span:has(.is-pinned):nth-child(n + 4):nth-child(-n + 6) {
+        > span:nth-child(n + 4 of :has(.is-pinned)):nth-child(-n + 6 of :has(.is-pinned)) {
         grid-row: 2 !important;
         position: relative !important;
         z-index: 1 !important;
@@ -591,13 +596,13 @@ body:has(#tabs-tabbar-container.right) {
 
       #tabs-container
         .tab-strip
-        > span:has(.is-pinned):nth-child(n + 7):nth-child(-n + 9) {
+        > span:nth-child(n + 7 of :has(.is-pinned)):nth-child(-n + 9 of :has(.is-pinned)) {
         grid-row: 3 !important;
         position: relative !important;
         z-index: 1 !important;
       }
 
-      #tabs-container .tab-strip > span:has(.is-pinned):nth-child(n + 10),
+      #tabs-container .tab-strip > span:nth-child(n + 10 of :has(.is-pinned)),
       #tabs-container .tab-strip > span:not(:has(.is-pinned)) {
         grid-row: auto !important;
         /* margin-top: calc((var(--pinned-tab-height) + var(--pinned-gap)) * 3 + 1px) !important; */
