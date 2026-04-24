@@ -514,3 +514,30 @@ html.beautymedia-tabs-animation-enabled .tab-position:has(.tab.audio-on):not(:ha
   animation: dpAutoRotate 2s linear infinite;
   pointer-events: none !important;
 }
+
+/* Keep animated ring available on compact/pinned tabs that rely on tab-wrapper rendering */
+html.beautymedia-tabs-animation-enabled .tab-position:has(.tab:is(.pinned, .tab-small).audio-on):not(:has(.active)) .tab-wrapper {
+  position: relative;
+}
+
+html.beautymedia-tabs-animation-enabled .tab-position:has(.tab:is(.pinned, .tab-small).audio-on):not(:has(.active)) .tab-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  box-sizing: border-box;
+  border-radius: var(--currentRadius);
+  padding: 2px;
+  background: conic-gradient(from var(--dp-deg) at center, rgba(126, 242, 157, 1) 0%, rgba(38, 147, 226, 1) 50%, rgba(126, 242, 157, 1) 100%);
+  background-clip: border-box;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0) padding-box;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0) padding-box;
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  animation: dpAutoRotate 2s linear infinite;
+  pointer-events: none !important;
+}
