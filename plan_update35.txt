@@ -1,4 +1,0 @@
-Ok, so I see `test_fix.py` modified the file but I ran `git checkout` which did not revert `BeautyMedia.js` because they were tracked? No, `git checkout Vivaldi7.9Stable/Javascripts/BeautyMedia.js` works if I didn't stage the changes.
-Wait, I used `git reset HEAD` and then `git checkout` earlier.
-Wait, my previous `git diff --cached` for `BeautyMedia.js` was empty! But `git diff Vivaldi7.9Stable/Javascripts/BeautyMedia.js` was also empty? No, I ran `git diff` with no files specified, and then `git diff --cached`.
-Let's see what is in `BeautyMedia.js` at line 609 RIGHT NOW.

@@ -495,12 +495,12 @@ html.beautymedia-tabs-animation-enabled .tab.audio-on:not(.active) {
 }
 
 
-html.beautymedia-tabs-animation-enabled .tab-position:has(.tab.audio-on):not(:has(.active)),
+html.beautymedia-tabs-animation-enabled .tab-position:not(:has(.tab-wrapper)):has(.tab.audio-on):not(:has(.active)),
 html.beautymedia-tabs-animation-enabled .tab-wrapper:has(.tab.audio-on):not(:has(.active)) {
   position: relative !important;
 }
 
-html.beautymedia-tabs-animation-enabled .tab-position:has(.tab.audio-on):not(:has(.active))::before,
+html.beautymedia-tabs-animation-enabled .tab-position:not(:has(.tab-wrapper)):has(.tab.audio-on):not(:has(.active))::before,
 html.beautymedia-tabs-animation-enabled .tab-wrapper:has(.tab.audio-on):not(:has(.active))::before {
   content: '';
   position: absolute;
