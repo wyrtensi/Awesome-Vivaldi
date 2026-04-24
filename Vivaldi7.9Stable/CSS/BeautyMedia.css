@@ -493,33 +493,10 @@ html.beautymedia-tabs-animation-enabled .tab.audio-on:not(.active) {
   height: 97% !important;
 }
 
-html.beautymedia-tabs-animation-enabled .tab-position:has(.tab.audio-on):not(:has(.active))::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  box-sizing: border-box;
-  border-radius: var(--currentRadius);
-  padding: 2px;
-  background: conic-gradient(from var(--dp-deg) at center, rgba(126, 242, 157, 1) 0%, rgba(38, 147, 226, 1) 50%, rgba(126, 242, 157, 1) 100%);
-  background-clip: border-box;
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0) padding-box;
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0) padding-box;
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-  animation: dpAutoRotate 2s linear infinite;
-  pointer-events: none !important;
-}
-/* --- LAYOUT-AGNOSTIC ANIMATED TAB GLOW OVERRIDES --- */
-/* Keep glow working when tab-position is flattened by other tab layout mods. */
-html.beautymedia-tabs-animation-enabled .tab-position:has(.tab.audio-on):not(:has(.active))::after {
-  content: none;
-}
-
+/*
+  Layout-agnostic glow layer: attach to .tab-wrapper so it survives layouts
+  that flatten or restyle .tab-position (e.g. grid/display:contents tab mods).
+*/
 html.beautymedia-tabs-animation-enabled .tab.audio-on:not(.active) .tab-wrapper {
   position: relative;
   isolation: isolate;
@@ -533,7 +510,18 @@ html.beautymedia-tabs-animation-enabled .tab.audio-on:not(.active) .tab-wrapper:
   box-sizing: border-box;
   border-radius: var(--currentRadius, var(--radius, 8px));
   padding: 2px;
-  background: conic-gradient(from var(--dp-deg) at center, rgba(126, 242, 157, 1) 0%, rgba(38, 147, 226, 1) 50%, rgba(126, 242, 157, 1) 100%);
+  background: conic-gradient(
+    from var(--dp-deg) at center,
+    var(
+      --bm-tab-gradient-stops,
+      var(
+        --bm-global-gradient-stops,
+        rgba(126, 242, 157, 1) 0%,
+        rgba(38, 147, 226, 1) 50%,
+        rgba(126, 242, 157, 1) 100%
+      )
+    )
+  );
   background-clip: border-box;
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,

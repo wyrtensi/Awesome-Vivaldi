@@ -585,47 +585,17 @@
 
       // Apply to tab UI via tabId ONLY
       if (tabId) {
-        const tabEl = document.querySelector(`.tab-wrapper[data-id="tab-${tabId}"]`) || document.querySelector(`#tab-${tabId}`);
-        if (tabEl) {
-          tabEl.style.setProperty('--bm-icon-color', iconColor);
-          tabEl.style.setProperty('--bm-icon-color-hover', iconColor);
+        const tabNode = document.querySelector(`.tab-wrapper[data-id="tab-${tabId}"]`) || document.querySelector(`#tab-${tabId}`);
+        if (tabNode) {
+          const tabWrapper = tabNode.classList?.contains('tab-wrapper') ? tabNode : tabNode.closest('.tab-wrapper') || tabNode;
+          const tabElement = tabNode.classList?.contains('tab') ? tabNode : tabNode.closest('.tab') || tabNode;
 
-          let styleTag = document.getElementById(`bm-style-tab-${tabId}`);
-          if (!styleTag) {
-              styleTag = document.createElement('style');
-              styleTag.id = `bm-style-tab-${tabId}`;
-              document.head.appendChild(styleTag);
-          }
-
-          // Target the ::after of the tab-position containing this tab by leveraging CSS :has to match the unique tab ID inside the generic position node
-          const tabPosition = tabEl.closest('.tab-position');
-
-          const isAudioOn = tabEl.classList.contains('audio-on') || tabEl.querySelector('.audio-on');
-
-          if (isAudioOn) {
-              if (tabPosition) {
-                  // Use both id and data-id to account for vivaldi recycling wrappers
-                  styleTag.textContent = `
-                      html.beautymedia-tabs-animation-enabled .tab-position:has([id="tab-${tabId}"].audio-on):not(:has(.active))::after,
-                      html.beautymedia-tabs-animation-enabled .tab-position:has([id="tab-${tabId}"] .audio-on):not(:has(.active))::after,
-                      html.beautymedia-tabs-animation-enabled .tab-position:has([data-id="tab-${tabId}"].audio-on):not(:has(.active))::after,
-                      html.beautymedia-tabs-animation-enabled .tab-position:has([data-id="tab-${tabId}"] .audio-on):not(:has(.active))::after {
-                          background: conic-gradient(from var(--dp-deg) at center, ${gradientStops}) !important;
-                      }
-                  `;
-              } else {
-                  styleTag.textContent = `
-                      html.beautymedia-tabs-animation-enabled .tab[id="tab-${tabId}"].audio-on:not(.active)::after,
-                      html.beautymedia-tabs-animation-enabled .tab[data-id="tab-${tabId}"].audio-on:not(.active)::after,
-                      html.beautymedia-tabs-animation-enabled .tab-wrapper[id="tab-${tabId}"].audio-on:not(.active)::after,
-                      html.beautymedia-tabs-animation-enabled .tab-wrapper[data-id="tab-${tabId}"].audio-on:not(.active)::after {
-                          background: conic-gradient(from var(--dp-deg) at center, ${gradientStops}) !important;
-                      }
-                  `;
-              }
-          } else {
-              styleTag.textContent = '';
-          }
+          [tabWrapper, tabElement].forEach((el) => {
+            if (!el || !el.style) return;
+            el.style.setProperty('--bm-icon-color', iconColor);
+            el.style.setProperty('--bm-icon-color-hover', iconColor);
+            el.style.setProperty('--bm-tab-gradient-stops', gradientStops);
+          });
         }
       }
     }
@@ -955,14 +925,8 @@
         root.style.setProperty('--bm-dp-progress-bg', 'rgba(255, 255, 255, 0.15)');
     }
 
-    let styleTag = document.getElementById('bm-style-global');
-    if (!styleTag) {
-        styleTag = document.createElement('style');
-        styleTag.id = 'bm-style-global';
-        document.head.appendChild(styleTag);
-    }
     const globalStops = getGlobalGradientStops();
-    styleTag.textContent = `html.beautymedia-tabs-animation-enabled .tab-position:has(.tab.audio-on):not(:has(.active))::after { background: conic-gradient(from var(--dp-deg) at center, ${globalStops}) !important; }`;
+    root.style.setProperty('--bm-global-gradient-stops', globalStops);
 
     if (!s.enabled || !s.showPlayer) {
       state.instances.forEach(inst => {
@@ -1304,7 +1268,7 @@ function saveSettings() {
             e.stopPropagation();
 
             const overlay = document.createElement('div');
-            overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:999999;display:flex;align-items:center;justify-content:center;';
+            overlay.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:2147483647;isolation:isolate;display:flex;align-items:center;justify-content:center;';
 
             const modal = document.createElement('div');
             modal.style.cssText = 'background:var(--colorBgDark, #2d2d2d) !important;border:1px solid var(--colorBorderSubtle, rgba(255,255,255,0.2)) !important;border-radius:8px !important;padding:20px !important;max-width:400px !important;box-shadow:0 10px 30px rgba(0,0,0,0.8) !important;';
@@ -1618,9 +1582,6 @@ function saveSettings() {
       if (details.frameId === 0 && isInjectable(details.url)) injectMonitor(details.tabId);
     });
     chrome.tabs.onRemoved.addListener((tabId) => {
-      const styleTag = document.getElementById(`bm-style-tab-${tabId}`);
-      if (styleTag) styleTag.remove();
-
       state.instances.forEach(inst => {
         if (inst.tabId === tabId) {
           inst.hideForTabClose();

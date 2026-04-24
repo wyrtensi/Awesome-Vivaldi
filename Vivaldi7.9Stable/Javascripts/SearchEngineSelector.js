@@ -304,8 +304,13 @@
             closeBtn.innerText = 'Close';
             closeBtn.className = 'ses-modal-close';
 
+            let escHandlerRef = null;
             const closeModal = () => {
                 modal.classList.remove('visible');
+                if (escHandlerRef) {
+                    document.removeEventListener('keydown', escHandlerRef, true);
+                    escHandlerRef = null;
+                }
                 setTimeout(() => modal.remove(), 300);
             };
 
@@ -314,19 +319,18 @@
             content.appendChild(footer);
 
             modal.appendChild(content);
-            const browserNode = document.querySelector('#browser') || document.body;
-            browserNode.appendChild(modal);
+            document.body.appendChild(modal);
 
             // Close events
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) closeModal();
             });
-            document.addEventListener('keydown', function escHandler(e) {
+            escHandlerRef = function escHandler(e) {
                 if (e.key === 'Escape') {
                     closeModal();
-                    document.removeEventListener('keydown', escHandler);
                 }
-            });
+            };
+            document.addEventListener('keydown', escHandlerRef, true);
 
             // Animate in
             requestAnimationFrame(() => {
