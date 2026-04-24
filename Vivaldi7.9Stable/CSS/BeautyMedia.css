@@ -450,7 +450,7 @@ html.beautymedia-tabs-icon-enabled .tab-audio:hover::after {
 /* --- PRECISION PLACEMENT LOGIC --- */
 
 /* 1. Normal Tabs: Audio icon sits at the end of the tab (Native Vivaldi style) */
-.tab:not(.pinned):not(.tab-small) .tab-audio {
+html.beautymedia-tabs-icon-enabled .tab:not(.pinned):not(.tab-small) .tab-audio {
   margin-left: auto !important;
   margin-right: 4px !important;
 }
@@ -500,6 +500,38 @@ html.beautymedia-tabs-animation-enabled .tab-position:has(.tab.audio-on):not(:ha
   z-index: -1;
   box-sizing: border-box;
   border-radius: var(--currentRadius);
+  padding: 2px;
+  background: conic-gradient(from var(--dp-deg) at center, rgba(126, 242, 157, 1) 0%, rgba(38, 147, 226, 1) 50%, rgba(126, 242, 157, 1) 100%);
+  background-clip: border-box;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0) padding-box;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0) padding-box;
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  animation: dpAutoRotate 2s linear infinite;
+  pointer-events: none !important;
+}
+/* --- LAYOUT-AGNOSTIC ANIMATED TAB GLOW OVERRIDES --- */
+/* Keep glow working when tab-position is flattened by other tab layout mods. */
+html.beautymedia-tabs-animation-enabled .tab-position:has(.tab.audio-on):not(:has(.active))::after {
+  content: none;
+}
+
+html.beautymedia-tabs-animation-enabled .tab.audio-on:not(.active) .tab-wrapper {
+  position: relative;
+  isolation: isolate;
+}
+
+html.beautymedia-tabs-animation-enabled .tab.audio-on:not(.active) .tab-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  box-sizing: border-box;
+  border-radius: var(--currentRadius, var(--radius, 8px));
   padding: 2px;
   background: conic-gradient(from var(--dp-deg) at center, rgba(126, 242, 157, 1) 0%, rgba(38, 147, 226, 1) 50%, rgba(126, 242, 157, 1) 100%);
   background-clip: border-box;
